@@ -16,3 +16,27 @@ img {
   display: block;
   max-width: 100%;
 }
+
+body > .button--start,
+body > .button--stop {
+  margin-left: 45%;
+  margin-right: 45%;
+  border: medium solid black;
+  border-radius: 3px;
+  color: darkblue;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px;
+}
+
+.field > .value {
+  font-size: 29px;
+}
+
+.timer {
+  display: flex;
+}
