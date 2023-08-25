@@ -41,11 +41,6 @@ const options = {
     const chosenDate = selectedDates[0].getTime();
     const timeLeftConverted = convertMs(chosenDate - dateNow);
 
-    const second = 1000;
-    const minute = second * 60;
-    const hour = minute * 60;
-    const day = hour * 24;
-
     dataDays.textContent = timeLeftConverted.days;
     dataHours.textContent = timeLeftConverted.hours;
     dataMinutes.textContent = timeLeftConverted.minutes;
@@ -61,19 +56,19 @@ const options = {
         if (dataDays.textContent === 0) {
           console.log('000000000000');
         }
-      }, timeLeftConverted.days * day * hour * minute * second);
+      }, 1000 * 60 * 60 * 24);
 
       const intervalCount2 = setInterval(function () {
         dataHours.textContent--;
-      }, timeLeftConverted.hours * minute * second);
+      }, 1000 * 60 * 60);
 
       const intervalCount3 = setInterval(function () {
         dataMinutes.textContent--;
-      }, timeLeftConverted.minutes * second);
+      }, 1000 * 60);
 
       const intervalCount4 = setInterval(function () {
         dataSeconds.textContent--;
-      }, timeLeftConverted.seconds * 1000);
+      }, 1000);
     }
   },
 };
