@@ -6,7 +6,7 @@ import Notiflix from 'notiflix';
 
 const startBtn = document.querySelector('.button--start--timer');
 const flatpickr = require('flatpickr');
-const dateTimePicker = document.querySelector('#datetime-picker');
+const dateTimePicker = flatpickr('#datetime-picker');
 
 const dataDays = document.querySelector('[data-days]');
 const dataHours = document.querySelector('[data-hours]');
@@ -40,12 +40,13 @@ const options = {
     const dateNow = new Date();
     const chosenDate = selectedDates[0].getTime();
     const timeLeftConverted = convertMs(chosenDate - dateNow);
+    console.log(timeLeftConverted);
 
     dataDays.textContent = timeLeftConverted.days;
     dataHours.textContent = timeLeftConverted.hours;
     dataMinutes.textContent = timeLeftConverted.minutes;
     dataSeconds.textContent = timeLeftConverted.seconds;
-    console.log(timeLeftConverted.days * day * minute * second);
+    //console.log(timeLeftConverted.days * day * minute * second);
 
     startBtn.addEventListener('click', counter);
 
@@ -53,9 +54,6 @@ const options = {
       console.log('blahblah');
       const intervalCount = setInterval(function () {
         dataDays.textContent--;
-        if (dataDays.textContent === 0) {
-          console.log('000000000000');
-        }
       }, 1000 * 60 * 60 * 24);
 
       const intervalCount2 = setInterval(function () {
@@ -69,6 +67,9 @@ const options = {
       const intervalCount4 = setInterval(function () {
         dataSeconds.textContent--;
       }, 1000);
+    }
+    if (timeLeftConverted < 0) {
+      clearInterval(intervalCount4);
     }
   },
 };
