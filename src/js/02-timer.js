@@ -6,7 +6,7 @@ import Notiflix from 'notiflix';
 
 const startBtn = document.querySelector('.button--start--timer');
 const flatpickr = require('flatpickr');
-const dateTimePicker = flatpickr('#datetime-picker');
+//flatpickr('#datetime-picker', );
 
 const dataDays = document.querySelector('[data-days]');
 const dataHours = document.querySelector('[data-hours]');
@@ -20,7 +20,7 @@ let value = document.querySelectorAll('.value');
 // }
 startBtn.disabled = true;
 
-const options = {
+flatpickr('.datetime-picker', {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
@@ -48,33 +48,33 @@ const options = {
     dataSeconds.textContent = timeLeftConverted.seconds;
     //console.log(timeLeftConverted.days * day * minute * second);
 
-    startBtn.addEventListener('click', counter);
+    // startBtn.addEventListener('click', counter);
 
-    function counter() {
-      console.log('blahblah');
-      const intervalCount = setInterval(function () {
-        dataDays.textContent--;
-      }, 1000 * 60 * 60 * 24);
+    // function counter() {
+    //   console.log('blahblah');
+    //   const intervalCount = setInterval(function () {
+    //     dataDays.textContent--;
+    //   }, 1000 * 60 * 60 * 24);
 
-      const intervalCount2 = setInterval(function () {
-        dataHours.textContent--;
-      }, 1000 * 60 * 60);
+    //   const intervalCount2 = setInterval(function () {
+    //     dataHours.textContent--;
+    //   }, 1000 * 60 * 60);
 
-      const intervalCount3 = setInterval(function () {
-        dataMinutes.textContent--;
-      }, 1000 * 60);
+    //   const intervalCount3 = setInterval(function () {
+    //     dataMinutes.textContent--;
+    //   }, 1000 * 60);
 
-      const intervalCount4 = setInterval(function () {
-        dataSeconds.textContent--;
-      }, 1000);
-    }
+    //   const intervalCount4 = setInterval(function () {
+    //     dataSeconds.textContent--;
+    //   }, 1000);
+    // }
     if (timeLeftConverted < 0) {
       clearInterval(intervalCount4);
     }
   },
-};
+});
 
-flatpickr(dateTimePicker, options);
+//flatpickr(dateTimePicker, options);
 
 function convertMs(ms) {
   const second = 1000;
