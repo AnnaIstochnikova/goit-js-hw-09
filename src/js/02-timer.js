@@ -5,8 +5,9 @@ import 'flatpickr/dist/flatpickr.min.css';
 import Notiflix from 'notiflix';
 
 const startBtn = document.querySelector('.button--start--timer');
-const flatpickr = require('flatpickr');
+//const flatpickr = require('flatpickr');
 //flatpickr('#datetime-picker', );
+const dateTimePicker = document.querySelector('.datetime-picker');
 
 const dataDays = document.querySelector('[data-days]');
 const dataHours = document.querySelector('[data-hours]');
@@ -20,7 +21,7 @@ let value = document.querySelectorAll('.value');
 // }
 startBtn.disabled = true;
 
-flatpickr('.datetime-picker', {
+flatpickr(dateTimePicker, {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
