@@ -5,8 +5,6 @@ import 'flatpickr/dist/flatpickr.min.css';
 import Notiflix from 'notiflix';
 
 const startBtn = document.querySelector('.button--start--timer');
-//const flatpickr = require('flatpickr');
-//flatpickr('#datetime-picker', );
 const dateTimePicker = document.querySelector('.datetime-picker');
 
 const dataDays = document.querySelector('[data-days]');
@@ -15,10 +13,6 @@ const dataMinutes = document.querySelector('[data-minutes]');
 const dataSeconds = document.querySelector('[data-seconds]');
 
 let value = document.querySelectorAll('.value');
-// let count = 0;
-// for (val of value) {
-//   val.textContent = count;
-// }
 startBtn.disabled = true;
 
 flatpickr(dateTimePicker, {
@@ -35,44 +29,66 @@ flatpickr(dateTimePicker, {
     if (selectedDates[0] < dateNow) {
       Notiflix.Notify.failure('Please choose a date in the future');
     }
-  },
-
-  onChange(selectedDates) {
-    const dateNow = new Date();
-    const chosenDate = selectedDates[0].getTime();
-    const timeLeftConverted = convertMs(chosenDate - dateNow);
-    console.log(timeLeftConverted);
-
-    dataDays.textContent = timeLeftConverted.days;
-    dataHours.textContent = timeLeftConverted.hours;
-    dataMinutes.textContent = timeLeftConverted.minutes;
-    dataSeconds.textContent = timeLeftConverted.seconds;
-    //console.log(timeLeftConverted.days * day * minute * second);
-
-    // startBtn.addEventListener('click', counter);
+    const timeObject = convertMs(selectedDates[0] - new Date());
+    startBtn.addEventListener('click', counter);
 
     // function counter() {
     //   console.log('blahblah');
     //   const intervalCount = setInterval(function () {
     //     dataDays.textContent--;
-    //   }, 1000 * 60 * 60 * 24);
-
-    //   const intervalCount2 = setInterval(function () {
-    //     dataHours.textContent--;
-    //   }, 1000 * 60 * 60);
-
-    //   const intervalCount3 = setInterval(function () {
-    //     dataMinutes.textContent--;
-    //   }, 1000 * 60);
-
-    //   const intervalCount4 = setInterval(function () {
-    //     dataSeconds.textContent--;
     //   }, 1000);
     // }
-    if (timeLeftConverted < 0) {
-      clearInterval(intervalCount4);
+
+    dataDays.innerHTML = addLeadingZero(timeObject.days);
+    dataHours.innerHTML = addLeadingZero(timeObject.hours);
+    dataMinutes.innerHTML = addLeadingZero(timeObject.minutes);
+    dataSeconds.innerHTML = addLeadingZero(timeObject.seconds);
+
+    startBtn.addEventListener('click', counter);
+
+    function counter() {
+      console.log('blahblah');
+      const intervalCount = setInterval(counter, 1000);
     }
+    //console.log(dataDays.innerHTML);
   },
+
+  // onChange(selectedDates) {
+  // const dateNow = new Date();
+  // const chosenDate = selectedDates[0].getTime();
+  // const timeLeftConverted = convertMs(chosenDate - dateNow);
+  //console.log(timeLeftConverted);
+
+  // dataDays.textContent = timeLeftConverted.days;
+  // dataHours.textContent = timeLeftConverted.hours;
+  // dataMinutes.textContent = timeLeftConverted.minutes;
+  // dataSeconds.textContent = timeLeftConverted.seconds;
+  //console.log(timeLeftConverted.days * day * minute * second);
+
+  // startBtn.addEventListener('click', counter);
+
+  // function counter() {
+  //   console.log('blahblah');
+  //   const intervalCount = setInterval(function () {
+  //     dataDays.textContent--;
+  //   }, 1000 * 60 * 60 * 24);
+
+  //   const intervalCount2 = setInterval(function () {
+  //     dataHours.textContent--;
+  //   }, 1000 * 60 * 60);
+
+  //   const intervalCount3 = setInterval(function () {
+  //     dataMinutes.textContent--;
+  //   }, 1000 * 60);
+
+  //   const intervalCount4 = setInterval(function () {
+  //     dataSeconds.textContent--;
+  //   }, 1000);
+  // }
+  //     if (timeLeftConverted < 0) {
+  //       clearInterval(intervalCount4);
+  //     }
+  // },
 });
 
 //flatpickr(dateTimePicker, options);
@@ -91,6 +107,11 @@ function convertMs(ms) {
   return { days, hours, minutes, seconds };
 }
 
+function addLeadingZero(num) {
+  if (num.toString.length < 2) {
+    return num.toString().padStart(2, '0');
+  }
+}
 // startBtn.addEventListener('click', function () {
 //   console.log('blahblah');
 //   const intervalCount = setInterval(function () {
