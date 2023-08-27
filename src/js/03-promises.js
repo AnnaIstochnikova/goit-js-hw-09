@@ -16,18 +16,12 @@ function valueFromUser(e) {
   delayValue = parseInt(delayInput.value);
   delayStepValue = parseInt(step.value);
   amountValue = parseInt(amount.value);
-  createPromise();
+  createPromises();
 }
 
-submitBtn.addEventListener('click', valueFromUser);
-submitBtn.addEventListener('submit', createPromise);
-
 function createPromise(position, delay) {
-  delay = delayValue;
   const shouldResolve = Math.random() > 0.3;
-  console.log('Delay:', delayValue);
-  console.log('Delay Step:', delayStepValue);
-  console.log('Amount:', amountValue);
+
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (shouldResolve) {
@@ -35,36 +29,32 @@ function createPromise(position, delay) {
       } else {
         reject('Error! Error passed to reject function');
       }
-    }, delayValue);
+    }, delay);
   });
 }
-const promiseArr = [];
 
-for (let i = 1; i <= amountValue; i++) {
-  promiseArr.push(createPromise(`Promise number ${i}`, i * 100));
+function createPromises() {
+  const promiseArr = [];
+
+  for (let i = 1; i <= amountValue; i++) {
+    const promiseDelay = delayValue + (i - 1) * delayStepValue;
+    promiseArr.push({
+      promise: createPromise(`Promise number ${i}`, promiseDelay),
+      delay: promiseDelay,
+    });
+  }
+
+  Promise.allSettled(promiseArr.map(p => p.promise)).then(results => {
+    results.forEach((result, index) => {
+      if (result.status === 'fulfilled') {
+        console.log(
+          `✅ Fulfilled promise ${index + 1} in ${promiseArr[index].delay}ms`
+        );
+      } else {
+        console.log(`❌ Rejected promise ${index + 1}`);
+      }
+    });
+  });
 }
 
-Promise.allSettled(promiseArr)
-  .then(({ position, delay }) => {
-    console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
-  })
-  .catch(({ position, delay }) => {
-    console.log(`❌ Rejected promise ${position} in ${delay}ms`);
-  });
-
-// function createPromise(position, delay) {
-//   const shouldResolve = Math.random() > 0.3;
-//   console.log(position);
-//   console.log(delay);
-//   return new Promise((resolve, reject) => {
-//     setTimeout(() => {
-//       if (shouldResolve) {
-//         resolve('Success! Value passed to resolve function');
-//       } else {
-//         reject('Error! Error passed to reject function');
-//       }
-//     }, getInputValue);
-//   });
-// }
-
-// console.log(createPromise(2, 6));
+submitBtn.addEventListener('click', valueFromUser);

@@ -14,7 +14,7 @@ const dataSeconds = document.querySelector('[data-seconds]');
 
 startBtn.disabled = true;
 
-let selectedDate = new Date(); // Inicjalizacja wybranej daty na teraz
+let selectedDate = new Date();
 let intervalCount;
 
 const picker = flatpickr(dateTimePicker, {
@@ -24,7 +24,7 @@ const picker = flatpickr(dateTimePicker, {
   minuteIncrement: 1,
 
   onClose(selectedDates) {
-    selectedDate = selectedDates[0]; // Aktualizacja wybranej daty po zmianie
+    selectedDate = selectedDates[0];
     const dateNow = new Date();
 
     if (selectedDate > dateNow) {
@@ -40,8 +40,8 @@ const picker = flatpickr(dateTimePicker, {
 startBtn.addEventListener('click', () => {
   if (selectedDate > new Date()) {
     startBtn.disabled = true;
-    intervalCount = setInterval(() => counter(selectedDate), 1000); // Rozpocznij odliczanie co sekundę
-    updateCountdown(selectedDate); // Wywołaj aktualizację na początku
+    intervalCount = setInterval(() => counter(selectedDate), 1000);
+    updateCountdown(selectedDate);
   }
 });
 
