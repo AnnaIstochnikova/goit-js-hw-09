@@ -40,3 +40,24 @@ body > .button--stop {
 .timer {
   display: flex;
 }
+
+.form > label > input {
+  width: 100px;
+}
+
+.form {
+  display: flex;
+}
+
+.form > label {
+  display: flex;
+  flex-direction: column;
+  margin: 0 10px;
+}
+.body__promises {
+  background-color: rgb(36, 139, 139);
+}
+
+.button--submit {
+  margin-left: 20px;
+}
