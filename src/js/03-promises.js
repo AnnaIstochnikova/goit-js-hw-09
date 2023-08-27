@@ -1,10 +1,11 @@
 'use strict';
 
+import Notiflix from 'notiflix';
+
 const delayInput = document.querySelector('.delay');
 const step = document.querySelector('.delay--step');
 const amount = document.querySelector('.amount');
 const submitBtn = document.querySelector('.button--submit');
-const form = document.querySelector('.form');
 
 let delayValue = 0;
 let delayStepValue = 0;
@@ -19,7 +20,7 @@ function valueFromUser(e) {
   createPromises();
 }
 
-function createPromise(position, delay) {
+function createPromise(delay) {
   const shouldResolve = Math.random() > 0.3;
 
   return new Promise((resolve, reject) => {
@@ -47,11 +48,17 @@ function createPromises() {
   Promise.allSettled(promiseArr.map(p => p.promise)).then(results => {
     results.forEach((result, index) => {
       if (result.status === 'fulfilled') {
-        console.log(
-          `✅ Fulfilled promise ${index + 1} in ${promiseArr[index].delay}ms`
-        );
+        setTimeout(() => {
+          Notiflix.Notify.success(
+            `Fulfilled promise ${index + 1} in ${promiseArr[index].delay}ms`
+          );
+        }, promiseArr[index].delay);
       } else {
-        console.log(`❌ Rejected promise ${index + 1}`);
+        setTimeout(() => {
+          Notiflix.Notify.failure(
+            `Rejected promise ${index + 1} in ${promiseArr[index].delay}ms`
+          );
+        }, promiseArr[index].delay);
       }
     });
   });
