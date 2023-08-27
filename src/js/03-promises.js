@@ -1,6 +1,6 @@
 'use strict';
 
-const delay = document.querySelector('.delay');
+const delayInput = document.querySelector('.delay');
 const step = document.querySelector('.delay--step');
 const amount = document.querySelector('.amount');
 const submitBtn = document.querySelector('.button--submit');
@@ -13,7 +13,7 @@ let amountValue = 0;
 function valueFromUser(e) {
   e.preventDefault();
 
-  delayValue = parseInt(delay.value);
+  delayValue = parseInt(delayInput.value);
   delayStepValue = parseInt(step.value);
   amountValue = parseInt(amount.value);
   createPromise();
@@ -22,7 +22,8 @@ function valueFromUser(e) {
 submitBtn.addEventListener('click', valueFromUser);
 submitBtn.addEventListener('submit', createPromise);
 
-function createPromise() {
+function createPromise(position, delay) {
+  delay = delayValue;
   const shouldResolve = Math.random() > 0.3;
   console.log('Delay:', delayValue);
   console.log('Delay Step:', delayStepValue);
@@ -37,13 +38,18 @@ function createPromise() {
     }, delayValue);
   });
 }
+const promiseArr = [];
 
-createPromise()
-  .then(({ position, delayValue }) => {
-    console.log(`✅ Fulfilled promise ${position} in ${delayValue}ms`);
+for (let i = 1; i <= amountValue; i++) {
+  promiseArr.push(createPromise(`Promise number ${i}`, i * 100));
+}
+
+Promise.allSettled(promiseArr)
+  .then(({ position, delay }) => {
+    console.log(`✅ Fulfilled promise ${position} in ${delay}ms`);
   })
   .catch(({ position, delay }) => {
-    console.log(`❌ Rejected promise ${position} in ${delayValue}ms`);
+    console.log(`❌ Rejected promise ${position} in ${delay}ms`);
   });
 
 // function createPromise(position, delay) {
