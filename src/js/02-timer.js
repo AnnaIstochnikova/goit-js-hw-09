@@ -12,86 +12,72 @@ const dataHours = document.querySelector('[data-hours]');
 const dataMinutes = document.querySelector('[data-minutes]');
 const dataSeconds = document.querySelector('[data-seconds]');
 
-let value = document.querySelectorAll('.value');
 startBtn.disabled = true;
 
-flatpickr(dateTimePicker, {
+let selectedDate = new Date(); // Inicjalizacja wybranej daty na teraz
+let intervalCount;
+
+const picker = flatpickr(dateTimePicker, {
   enableTime: true,
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
 
   onClose(selectedDates) {
+    selectedDate = selectedDates[0]; // Aktualizacja wybranej daty po zmianie
     const dateNow = new Date();
-    if (selectedDates[0] > dateNow) {
+
+    if (selectedDate > dateNow) {
       startBtn.disabled = false;
-    }
-    if (selectedDates[0] < dateNow) {
+      updateCountdown(selectedDate);
+    } else {
+      startBtn.disabled = true;
       Notiflix.Notify.failure('Please choose a date in the future');
     }
-    const timeObject = convertMs(selectedDates[0] - new Date());
-    startBtn.addEventListener('click', counter);
+  },
+});
 
-    // function counter() {
-    //   console.log('blahblah');
-    //   const intervalCount = setInterval(function () {
-    //     dataDays.textContent--;
-    //   }, 1000);
-    // }
+startBtn.addEventListener('click', () => {
+  if (selectedDate > new Date()) {
+    startBtn.disabled = true;
+    intervalCount = setInterval(() => counter(selectedDate), 1000); // Rozpocznij odliczanie co sekundę
+    updateCountdown(selectedDate); // Wywołaj aktualizację na początku
+  }
+});
+
+function counter(targetDate) {
+  const currentDate = new Date();
+  const remainingTime = targetDate - currentDate;
+
+  if (remainingTime > 0) {
+    const timeObject = convertMs(remainingTime);
 
     dataDays.innerHTML = addLeadingZero(timeObject.days);
     dataHours.innerHTML = addLeadingZero(timeObject.hours);
     dataMinutes.innerHTML = addLeadingZero(timeObject.minutes);
     dataSeconds.innerHTML = addLeadingZero(timeObject.seconds);
+  } else {
+    clearInterval(intervalCount);
+    dataDays.innerHTML = '00';
+    dataHours.innerHTML = '00';
+    dataMinutes.innerHTML = '00';
+    dataSeconds.innerHTML = '00';
+  }
+}
 
-    startBtn.addEventListener('click', counter);
+function updateCountdown(targetDate) {
+  const currentDate = new Date();
+  const remainingTime = targetDate - currentDate;
 
-    function counter() {
-      console.log('blahblah');
-      const intervalCount = setInterval(counter, 1000);
-    }
-    //console.log(dataDays.innerHTML);
-  },
+  if (remainingTime > 0) {
+    const timeObject = convertMs(remainingTime);
 
-  // onChange(selectedDates) {
-  // const dateNow = new Date();
-  // const chosenDate = selectedDates[0].getTime();
-  // const timeLeftConverted = convertMs(chosenDate - dateNow);
-  //console.log(timeLeftConverted);
-
-  // dataDays.textContent = timeLeftConverted.days;
-  // dataHours.textContent = timeLeftConverted.hours;
-  // dataMinutes.textContent = timeLeftConverted.minutes;
-  // dataSeconds.textContent = timeLeftConverted.seconds;
-  //console.log(timeLeftConverted.days * day * minute * second);
-
-  // startBtn.addEventListener('click', counter);
-
-  // function counter() {
-  //   console.log('blahblah');
-  //   const intervalCount = setInterval(function () {
-  //     dataDays.textContent--;
-  //   }, 1000 * 60 * 60 * 24);
-
-  //   const intervalCount2 = setInterval(function () {
-  //     dataHours.textContent--;
-  //   }, 1000 * 60 * 60);
-
-  //   const intervalCount3 = setInterval(function () {
-  //     dataMinutes.textContent--;
-  //   }, 1000 * 60);
-
-  //   const intervalCount4 = setInterval(function () {
-  //     dataSeconds.textContent--;
-  //   }, 1000);
-  // }
-  //     if (timeLeftConverted < 0) {
-  //       clearInterval(intervalCount4);
-  //     }
-  // },
-});
-
-//flatpickr(dateTimePicker, options);
+    dataDays.innerHTML = addLeadingZero(timeObject.days);
+    dataHours.innerHTML = addLeadingZero(timeObject.hours);
+    dataMinutes.innerHTML = addLeadingZero(timeObject.minutes);
+    dataSeconds.innerHTML = addLeadingZero(timeObject.seconds);
+  }
+}
 
 function convertMs(ms) {
   const second = 1000;
@@ -108,13 +94,5 @@ function convertMs(ms) {
 }
 
 function addLeadingZero(num) {
-  if (num.toString.length < 2) {
-    return num.toString().padStart(2, '0');
-  }
+  return num.toString().padStart(2, '0');
 }
-// startBtn.addEventListener('click', function () {
-//   console.log('blahblah');
-//   const intervalCount = setInterval(function () {
-//     dataDays.textContent--;
-//   }, 1000);
-// });
